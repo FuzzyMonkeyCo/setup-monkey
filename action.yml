@@ -1,0 +1,48 @@
+name: monkey
+description: 🐵 Run @FuzzyMonkeyCo's monkey command
+author: fenollp (Pierre Fenoll)
+
+branding:
+  icon: wind
+  color: orange
+
+inputs:
+  command:
+    description: '`monkey` command to run (ex. `fuzz` or `fmt`)'
+    required: true
+  args:
+    description: Arguments to the command
+    required: false
+  workdir:
+    description: Where to run the command
+    default: '.'
+    required: false
+  api_key:
+    description: API key from https://fuzzymonkey.co
+    required: false
+  github_token:
+    description: GITHUB_TOKEN, to tame download rate-limiting
+    required: true
+    default: ${{ github.token }}
+
+outputs:
+  code:
+    description: Return code of the command.
+    value: ${{ steps.cmd.outputs.code }}
+  seed:
+    description: Seed returned by `monkey pastseed`. Non-empty when just ran `monkey fuzz` & found a bug.
+    value: ${{ steps.cmd.outputs.seed }}
+
+runs:
+  using: composite
+  steps:
+  - id: cmd
+    run: $GITHUB_ACTION_PATH/script.sh
+    shell: bash
+    env:
+      # INPUT_<VARIABLE_NAME> is not available in Composite run steps TODO https://github.com/actions/runner/issues/665
+      INPUT_COMMAND: ${{ inputs.command }}
+      INPUT_ARGS: ${{ inputs.args }}
+      INPUT_WORKDIR: ${{ inputs.workdir }}
+      INPUT_APIKEY: ${{ inputs.api_key }}
+      INPUT_GITHUB_TOKEN: ${{ inputs.github_token }}
