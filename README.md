@@ -18,7 +18,7 @@ Optional. API key from [https://fuzzymonkey.co](https://fuzzymonkey.co).
 
 ## Outputs
 ### `code`
-Return code of the command. (`0`: no error, 2: lint failure, 4: fmt failure, 6: bug found, 7: exec failed).
+Return code of the command. (`0`: no error, `2`: lint failure, `4`: fmt failure, `6`: bug found, `7`: exec failed).
 ### `seed`
 Seed returned by `monkey pastseed`. Non-empty when just ran `monkey fuzz` & found a bug.
 
