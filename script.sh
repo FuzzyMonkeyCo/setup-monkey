@@ -8,6 +8,7 @@ cd "$INPUT_WORKDIR"
 
 TMPATH="$(mktemp -d)"
 PATH="$TMPATH:$PATH"
+echo "PATH=$PATH" >>$GITHUB_ENV
 
 echo '::group:: Installing monkey ... https://github.com/FuzzyMonkeyCo/monkey'
 curl -sfL https://raw.githubusercontent.com/FuzzyMonkeyCo/monkey/master/.godownloader.sh | BINDIR="$TMPATH" sh
