@@ -19,7 +19,7 @@ jobs:
       with:
         command: update
         args: -vv
-        workdir: ./subdirectory/
+        workdir: .github/workflows
         api_key: ${{ secrets.FUZZYMONKEY_API_KEY }}
         github_token: ${{ secrets.github_token }}
 
