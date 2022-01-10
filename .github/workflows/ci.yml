@@ -6,14 +6,16 @@ jobs:
   monkey-help:
     runs-on: ubuntu-latest
     steps:
-    - uses: FuzzyMonkeyCo/action-monkey@${{ github.sha }}
+    - uses: actions/checkout@v1
+    - uses: ./
       with:
         command: help
 
   monkey-update:
     runs-on: ubuntu-latest
     steps:
-    - uses: FuzzyMonkeyCo/action-monkey@${{ github.sha }}
+    - uses: actions/checkout@v1
+    - uses: ./
       with:
         command: update
         args: -vv
@@ -24,5 +26,6 @@ jobs:
   setup-monkey:
     runs-on: ubuntu-latest
     steps:
-    - uses: FuzzyMonkeyCo/action-monkey@${{ github.sha }}
+    - uses: actions/checkout@v1
+    - uses: ./
     - run: monkey version
