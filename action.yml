@@ -1,4 +1,4 @@
-name: fuzzy-monkey
+name: setup-monkey
 description: 🐵 Run @FuzzyMonkeyCo's monkey command
 author: fenollp (Pierre Fenoll)
 
@@ -9,7 +9,7 @@ branding:
 inputs:
   command:
     description: '`monkey` command to run (ex. `fuzz` or `fmt`)'
-    required: true
+    required: false
   args:
     description: Arguments to the command
     required: false
@@ -22,7 +22,7 @@ inputs:
     required: false
   github_token:
     description: GITHUB_TOKEN, to tame download rate-limiting
-    required: true
+    required: false
     default: ${{ github.token }}
 
 outputs:
