@@ -6,9 +6,10 @@ set -o pipefail
 cd "$GITHUB_WORKSPACE"
 cd "$INPUT_WORKDIR"
 
-TMPATH="$(mktemp -d)"
+TMPATH="$RUNNER_TEMP/.fuzzymonkey"
+mkdir -p "$TMPATH"
+echo "$TMPATH" >>"$GITHUB_PATH"
 PATH="$TMPATH:$PATH"
-echo "PATH=$PATH" >>"$GITHUB_ENV"
 
 echo '::group:: Installing monkey ... https://github.com/FuzzyMonkeyCo/monkey'
 curl -sfL https://raw.githubusercontent.com/FuzzyMonkeyCo/monkey/master/.godownloader.sh | BINDIR="$TMPATH" sh
@@ -20,14 +21,15 @@ if [[ -z "$INPUT_COMMAND" ]]; then
 	exit 0
 fi
 
-if [[ -n "$INPUT_APIKEY" ]]; then
-	export FUZZYMONKEY_API_KEY="$INPUT_APIKEY"
-fi
-
 echo "::group:: $ cd $INPUT_WORKDIR && monkey $INPUT_COMMAND $INPUT_ARGS"
 set +e
-# shellcheck disable=SC2086
-monkey "$INPUT_COMMAND" $INPUT_ARGS; code=$?
+if [[ -n "$INPUT_APIKEY" ]]; then
+	# shellcheck disable=SC2086
+	FUZZYMONKEY_API_KEY="$INPUT_APIKEY" monkey "$INPUT_COMMAND" $INPUT_ARGS; code=$?
+else
+	# shellcheck disable=SC2086
+	monkey "$INPUT_COMMAND" $INPUT_ARGS; code=$?
+fi
 set -e
 echo "::set-output name=code::$code"
 if [[ $code -eq 6 ]]; then
